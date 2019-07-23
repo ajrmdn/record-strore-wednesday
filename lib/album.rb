@@ -2,6 +2,7 @@ class Album
   attr_reader :id
   attr_accessor :name
   @@albums = {}
+  @@sold_albums = {}
   @@total_rows = 0
 
   def initialize(name, id)
@@ -17,11 +18,17 @@ class Album
     @@albums[self.id] = Album.new(self.name, self.id)
   end
 
+  def sell
+    @@sold_albums[self.id] = Album.new(self.name, self.id)
+    @@albums.delete(self.id)
+  end
+
   def self.all()
     @@albums.values()
   end
 
-  def self.find(name)
+  def self.sold()
+    @@sold_albums.values()
   end
 
   def self.clear
@@ -31,6 +38,18 @@ class Album
 
   def self.find(id)
     @@albums[id]
+  end
+
+  def self.search(album_name)
+    @@albums.each_value do |value|
+      if value.name == album_name
+          return value
+      end
+    end
+  end
+
+  def self.sort()
+    @@albums.sort_by { |key, value| value.name}
   end
 
   def update(name)

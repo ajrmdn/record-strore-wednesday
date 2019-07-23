@@ -1,5 +1,6 @@
 require('rspec')
 require('album')
+require('pry')
 
 describe '#Album' do
   before(:each) do
@@ -69,4 +70,40 @@ describe '#Album' do
      expect(Album.all).to(eq([album2]))
    end
  end
+
+  describe('.search') do
+    it('finds an album by name')do
+    album = Album.new("De Stijl", nil)
+    album.save()
+    album2 = Album.new("Demon Days", nil)
+    album2.save()
+    search = Album.search("Demon Days")
+    expect(search).to(eq(album2))
+    end
+  end
+
+  describe('.sort') do
+    it('sorts an album by name')do
+    album = Album.new("Apples", nil)
+    album.save()
+    album2 = Album.new("Entroducing", nil)
+    album2.save()
+    album3 = Album.new("Currents", nil)
+    album3.save()
+    example = Album.sort()
+    expect(example).to(eq([[1, album], [3, album3], [2, album2]]))
+    end
+  end
+
+  describe('#sold') do
+    it('moves an album to sold_albums hash')do
+    album = Album.new("Afterburner", nil)
+    album.save()
+    album2 = Album.new("Yours, Conditionally", nil)
+    album2.save()
+    album.sell()
+    expect(album).to(eq(Album.sold[0]))
+    expect(Album.all).to(eq([album2]))
+    end
+  end
 end
