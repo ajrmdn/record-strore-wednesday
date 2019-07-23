@@ -45,16 +45,24 @@ class Album
   end
 
   def self.search(album_name)
+    @search_array = []
     @@albums.each_value do |value|
-      if value.name == album_name
-          return value
+      if value.name.match?(album_name)
+        @search_array.push(value)
+      elsif value.artist.match?(album_name)
+        @search_array.push(value)
+      elsif value.year.match?(album_name)
+        @search_array.push(value)
+      elsif value.genre.match?(album_name)
+        @search_array.push(value)
       end
     end
+    return @search_array
   end
 
   def self.sort()
-  sorted_array = @@albums.sort_by { |key, value| value.name}
-  @@albums = Hash[sorted_array.map {|key, value| [key, value]}]
+    sorted_array = @@albums.sort_by { |key, value| value.name}
+    @@albums = Hash[sorted_array.map {|key, value| [key, value]}]
   end
 
   def update(name)

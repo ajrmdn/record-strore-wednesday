@@ -10,8 +10,13 @@ get ('/') do
 end
 
 get ('/albums') do
-  @albums = Album.all
-  erb(:albums)
+  if params[:search] == nil
+    @albums = Album.all
+    erb(:albums)
+  else
+    @albums = Album.search(params[:search])
+    erb(:search_results)
+  end
 end
 
 get ('/albums/new') do
@@ -26,6 +31,13 @@ post ('/albums') do
   album = Album.new(name, nil, artist, year, genre)
   album.save()
   @albums = Album.all()
+  erb(:albums)
+end
+
+get ('/albums/:id/buy')do
+  @album = Album.find(params[:id].to_i())
+  @album.sell()
+  @albums = Album.all
   erb(:albums)
 end
 
