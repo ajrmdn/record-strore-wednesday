@@ -63,6 +63,7 @@ class Album
   def self.sort()
     sorted_array = @@albums.sort_by { |key, value| value.name}
     @@albums = Hash[sorted_array.map {|key, value| [key, value]}]
+    return @@albums
   end
 
   def update(name)
@@ -73,4 +74,8 @@ class Album
   def delete
     @@albums.delete(self.id)
   end
+
+  def songs
+   Song.find_by_album(self.id)
+ end
 end
